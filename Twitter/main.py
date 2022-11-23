@@ -33,7 +33,7 @@ class User(UserBase):
     user_name: str = Field(
         ...,
         min_length=3,
-        max_length=10,
+        max_length=20,
     )
     first_name: str = Field(
         ...,
@@ -88,9 +88,11 @@ def signup(user: UserRegister = Body(...)):
         - last_name: str
         - birth_date: str
     '''
+    print(user)
     with open('users.json', 'r+', encoding='utf-8') as f:
         
         results = json.loads(f.read())
+        print(results)
         user_dict = user.dict()
         user_dict['user_id'] = str(user_dict['user_id'])
         user_dict['birth_date'] = str(user_dict['birth_date'])
