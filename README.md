@@ -4,22 +4,17 @@ Here are some projects focused on the creation of APIs with Python and the FastA
 
 ## Twitter:
 
-The purpose of this project is to explore the FastAPI library in depth, use as many features as possible and have fun imagining the possible endpoints twitter has for its users. The logic behind each endpoint was not important in this project but it is something I will have fun with later on.
+The purpose of this project is to explore the FastAPI library in depth, use as many features as possible and have fun imagining the possible endpoints twitter has for its users. The logic behind each endpoint and the database management are beyond the scope of this project, however It was a good opportunity to practive with different types of objects as you can see in each method.
 
 There you can find two response models:
 
-### User
-It has the following endpoints:
-- signup
-- login
-- show_all_users
-- show_a_user
-- delete_a_user
-- update_a_user
+-----image-----
 
-### Tweets
-It has the following endpoints:
-- home
-- post_a_tweet
-- delete_a_tweet
-- update_a_tweet
+## To learn more about:
+For more on SQL and databases see my notes (only in spanish):
+
+- [FastAPI](https://drive.google.com/file/d/1e72w53UL7udKEjXqQ3TDJ7lvyY1VqcqF/view)
+- [POO with Python](https://drive.google.com/file/d/1pud53b66uLaWs0rKYCsoqygSnXZqtWLy/view)
+
+To see other learning projects and notes please follow this [link](https://imdiego.dev/projects/projects/notes).
+To see more about my please visit [my webpage](https://imdiego.dev/).
