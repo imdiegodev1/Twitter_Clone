@@ -1,14 +1,15 @@
-# FastAPI
-Here are some projects focused on the creation of APIs with Python and the FastAPI library
+# Twitter Clone:
 
-
-## Twitter:
-
-The purpose of this project is to explore the FastAPI library in depth, use as many features as possible and have fun imagining the possible endpoints twitter has for its users. The logic behind each endpoint and the database management are beyond the scope of this project, however It was a good opportunity to practive with different types of objects as you can see in each method.
+The purpose of this project is to explore the FastAPI library in depth, use as many features as possible and have fun thinking the possible endpoints twitter has for its users. The logic behind each endpoint and the database management are beyond the scope of this project, however It was a good opportunity to practive with different types of objects as you can see in each method.
 
 There you can find two response models:
 
------image-----
+![alt text](https://github.com/imdiegodev1/Twitter_Clone/blob/main/Twitter/models.png?raw=true)
+
+I  have also included the .json files created and used by the application in my laptop. Although the endpoints create all the necessary files, you can start playing and testing the endpoint without having to struggle to create new data. The .json files you will find are related to the models:
+
+- Tweets
+- Users
 
 ## To learn more about:
 For more on SQL and databases see my notes (only in spanish):
