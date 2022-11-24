@@ -12,7 +12,8 @@ from pydantic import EmailStr
 #FastAPI
 from fastapi import FastAPI
 from fastapi import status
-from fastapi import Body
+from fastapi import Body, Query
+from fastapi import HTTPException
 
 app = FastAPI()
 
@@ -88,7 +89,7 @@ def signup(user: UserRegister = Body(...)):
         - last_name: str
         - birth_date: str
     '''
-    print(user)
+
     with open('users.json', 'r+', encoding='utf-8') as f:
         
         results = json.loads(f.read())
@@ -111,8 +112,53 @@ def signup(user: UserRegister = Body(...)):
     summary= 'Login a User',
     tags=['Users']
 )
-def login():
-    pass
+def login(
+    user_name: str = Query(
+        ...,
+        min_length=3,
+        max_length=20,
+        title= "User_name",
+        description= "",
+        example = "JuanaLaAlpaca"
+        ),
+    password: str = Query(
+        ...,
+        min_length=8,
+        max_length=50,
+        title="Password",
+        description= "Your secret password",
+        example = "password123"
+        )
+):
+    with open('users.json', 'r+', encoding='utf-8') as f:
+        
+        results = json.loads(f.read())
+    
+    try:
+        index = 0
+        for i in results:
+            if i['user_name'] == user_name:
+                break
+            else:
+                index += 1
+
+        if results[index]["password"] == password:
+            response = results[index]
+
+        else:
+            raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail='Invalid user or password'
+        )
+
+    except:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail='Invalid user or password'
+        )
+        
+    
+    return response
 
 ### Show all users
 @app.get(
@@ -127,8 +173,6 @@ def show_all_users():
     This path operation shows all users in the app
 
     parameters:
-        -
-    returns a json list with all the users in the app with the following keys:
         - user_id: UUID
         - email: Emailstr
         - first_name: str
@@ -148,8 +192,29 @@ def show_all_users():
     summary= 'show a User',
     tags=['Users']
 )
-def show_a_user():
-    pass
+def show_a_user(user_id):
+    
+    with open('users.json', 'r+', encoding='utf-8') as f:
+        
+        results = json.loads(f.read())
+    
+    try:
+        index = 0
+        for i in results:
+            if i['user_id'] == user_id:
+                break
+            else:
+                index += 1
+        
+        response = results[index]
+    
+    except:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='Invalid user'
+        )
+
+    return response
 
 ##Delete a user
 @app.delete(
@@ -159,19 +224,86 @@ def show_a_user():
     summary= 'delete a User',
     tags=['Users']
 )
-def delete_a_user():
-    pass
+def delete_a_user(user_id):
+    
+    with open('users.json', 'r+', encoding='utf-8') as f:
+        
+        results = json.loads(f.read())
+        f.close()
+    
+    try:
+        index = 0
+
+        for i in results:
+            if i['user_id'] == user_id:
+                break
+            else:
+                index += 1
+
+        response = results[index]
+        results.pop(index)
+
+        with open("users.json", "w", encoding='utf-8') as jsonFile:
+            json.dump(results, jsonFile)
+
+    except:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='Invalid user'
+        )
+
+
+    return response
 
 ##Update a user
 @app.put(
     path='/users/{user_id}/update',
-    response_model=User,
+    #response_model=User,
     status_code=status.HTTP_200_OK,
     summary= 'update a User',
     tags=['Users']
 )
-def update_a_user():
-    pass
+def update_a_user(user_id, user: User = Body(...)):
+    
+    user_dict = user.dict()
+
+    with open('users.json', 'r+', encoding='utf-8') as f:
+        
+        results = json.loads(f.read())
+        #f.close()
+    
+    try:
+        index = 0
+
+        for i in results:
+            if i['user_id'] == user_id:
+                break
+            else:
+                index += 1
+
+        register = results[index]
+        results.pop(index)
+
+        register["email"] = user_dict['email']
+        register["first_name"] = user_dict['first_name']
+
+        results.append(register)
+
+        r_type = type(results)
+        
+        with open("users.json", "w") as jsonFile:
+            json.dump(results, jsonFile)
+        
+        response = register
+
+    except:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='Invalid user'
+        )
+
+
+    return response
 
 ##Tweets
 
@@ -250,7 +382,7 @@ def post(tweet: Tweet = Body(...)):
     summary= 'show a tweet',
     tags=['Tweets']
 )
-def show_a_tweet():
+def show_a_tweet(tweet_id):
     pass
 
 ###Delete a tweet
@@ -261,7 +393,7 @@ def show_a_tweet():
     summary= 'delete a tweet',
     tags=['Tweets']
 )
-def delete_a_tweet():
+def delete_a_tweet(tweet_id):
     pass
 
 ###Update a tweet
@@ -272,5 +404,5 @@ def delete_a_tweet():
     summary= 'update a tweet',
     tags=['Tweets']
 )
-def update_a_tweet():
+def update_a_tweet(tweet_id):
     pass
