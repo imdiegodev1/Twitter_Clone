@@ -383,7 +383,28 @@ def post(tweet: Tweet = Body(...)):
     tags=['Tweets']
 )
 def show_a_tweet(tweet_id):
-    pass
+    
+    with open('tweets.json', 'r+', encoding='utf-8') as f:
+        
+        results = json.loads(f.read())
+    
+    try:
+        index = 0
+        for i in results:
+            if i['tweet_id'] == tweet_id:
+                break
+            else:
+                index += 1
+        
+        response = results[index]
+    
+    except:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='Invalid user'
+        )
+
+    return response
 
 ###Delete a tweet
 @app.delete(
@@ -394,15 +415,43 @@ def show_a_tweet(tweet_id):
     tags=['Tweets']
 )
 def delete_a_tweet(tweet_id):
-    pass
+    with open('tweets.json', 'r+', encoding='utf-8') as f:
+        
+        results = json.loads(f.read())
+        f.close()
+    
+    try:
+        index = 0
+
+        for i in results:
+            if i['tweet_id'] == tweet_id:
+                break
+            else:
+                index += 1
+
+        response = results[index]
+        results.pop(index)
+
+        with open("tweets.json", "w", encoding='utf-8') as jsonFile:
+            json.dump(results, jsonFile)
+
+    except:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='Invalid user'
+        )
+
+
+    return response
 
 ###Update a tweet
-@app.put(
-    path='/tweets/{tweet_id}/update',
-    response_model=Tweet,
-    status_code=status.HTTP_200_OK,
-    summary= 'update a tweet',
-    tags=['Tweets']
-)
-def update_a_tweet(tweet_id):
-    pass
+##Comming soon
+#@app.put(
+#    path='/tweets/{tweet_id}/update',
+#    response_model=Tweet,
+#    status_code=status.HTTP_200_OK,
+#    summary= 'update a tweet',
+#    tags=['Tweets']
+#)
+#def update_a_tweet(tweet_id):
+#    pass
